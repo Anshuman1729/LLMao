@@ -104,7 +104,6 @@ function GenderBar({ female, male, coveragePct }: { female: number; male: number
 
 function AgeBarChart({ groups }: { groups: Array<{ label: string; value: number }> }) {
   const max = Math.max(...groups.map((g) => g.value), 1);
-  const active = groups.filter((g) => g.value > 0);
   return (
     <div className="flex items-end gap-2 h-16 mt-3">
       {groups.map((g) => {
