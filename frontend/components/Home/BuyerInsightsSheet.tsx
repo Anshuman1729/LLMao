@@ -30,26 +30,41 @@ function TipBox({ text }: { text: string }) {
 }
 
 
-function PostingWindowChart() {
-  const slots = [
-    { label: 'Before 8AM', active: false },
-    { label: '8AM–12PM', active: true },
-    { label: '12PM–6PM', active: false },
-    { label: 'After 6PM', active: true },
-  ];
+const BUYING_ACTIVITY = [
+  3, 2, 1, 1, 2, 4,        // 12AM–5AM
+  6, 12,                    // 6AM–7AM
+  22, 38, 54, 66,           // 8AM–11AM  ↑ rising
+  72,                       // 12PM      peak
+  32, 20, 17, 17, 24,       // 1PM–5PM   dip
+  48, 72,                   // 6PM–7PM   ↑ rising
+  64,                       // 8PM       still high
+  44, 26, 12,               // 9PM–11PM  ↓ falling
+];
+
+const PEAK_HOURS = new Set([8, 9, 10, 11, 12, 18, 19, 20]);
+const HOUR_LABELS: Record<number, string> = { 0: '12A', 6: '6A', 12: '12P', 18: '6P', 23: '11P' };
+
+function BuyingActivityChart() {
+  const max = Math.max(...BUYING_ACTIVITY);
   return (
-    <div className="mt-3">
-      <div className="flex items-end gap-3 h-20">
-        {slots.map((s) => (
-          <div key={s.label} className="flex-1 flex flex-col items-center gap-1.5">
-            <div className="w-full flex flex-col justify-end" style={{ height: '72px' }}>
+    <div className="mt-4">
+      <div className="flex items-end gap-[3px] h-20 w-full">
+        {BUYING_ACTIVITY.map((v, i) => {
+          const heightPct = Math.max(3, Math.round((v / max) * 100));
+          const isPeak = PEAK_HOURS.has(i);
+          return (
+            <div key={i} className="flex-1 flex flex-col justify-end">
               <div
-                className={`w-full rounded-t-lg ${s.active ? 'bg-[#FF2D7B]' : 'bg-gray-100'}`}
-                style={{ height: s.active ? '90%' : '20%' }}
+                className={`w-full rounded-sm ${isPeak ? 'bg-[#FF2D7B]' : 'bg-gray-200'}`}
+                style={{ height: `${heightPct}%` }}
               />
             </div>
-            <span className="text-[9px] text-gray-500 text-center leading-tight">{s.label}</span>
-          </div>
+          );
+        })}
+      </div>
+      <div className="flex justify-between mt-1.5">
+        {Object.entries(HOUR_LABELS).map(([i, label]) => (
+          <span key={i} className="text-[9px] text-gray-400">{label}</span>
         ))}
       </div>
     </div>
@@ -225,7 +240,7 @@ export function BuyerInsightsSheet({ insights, open, onClose, niche = 'fashion' 
           {/* ── WHEN DO THEY BUY ── */}
           <SectionDivider label="When do they buy" />
 
-          <PostingWindowChart />
+          <BuyingActivityChart />
           <TipBox text="Post either before noon or after 6 PM to maximise reach" />
 
           {/* ── WHO BUYS ── */}
