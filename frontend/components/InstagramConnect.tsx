@@ -1,9 +1,25 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { getInstagramAuthUrl } from '@/lib/api';
 
+const IS_MOCK = process.env.NEXT_PUBLIC_MOCK_AUTH === 'true';
+
 export function InstagramConnect() {
+  const router = useRouter();
   const href = getInstagramAuthUrl();
+
+  if (IS_MOCK) {
+    return (
+      <button
+        onClick={() => router.push(href)}
+        className="flex items-center gap-3 px-8 py-4 rounded-2xl bg-gradient-to-r from-purple-500 via-pink-500 to-orange-400 text-white font-bold text-base shadow-xl hover:shadow-2xl hover:scale-[1.02] transition-all duration-200"
+      >
+        <InstagramIcon />
+        Connect Instagram &amp; Get Started
+      </button>
+    );
+  }
 
   return (
     <a
@@ -11,7 +27,7 @@ export function InstagramConnect() {
       className="flex items-center gap-3 px-8 py-4 rounded-2xl bg-gradient-to-r from-purple-500 via-pink-500 to-orange-400 text-white font-bold text-base shadow-xl hover:shadow-2xl hover:scale-[1.02] transition-all duration-200"
     >
       <InstagramIcon />
-      Connect Instagram & Get Started
+      Connect Instagram &amp; Get Started
     </a>
   );
 }

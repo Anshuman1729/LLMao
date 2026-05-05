@@ -1,66 +1,193 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { getCreator } from '@/lib/api';
-import { Creator } from '@/lib/types';
-import { VoiceBotWidget } from '@/components/VoiceBot/VoiceBotWidget';
-import { Spinner } from '@/components/ui/Spinner';
+import { useState, useEffect, useCallback } from 'react';
+import { useRouter } from 'next/navigation';
+import { GhostMascot } from '@/components/Onboarding/GhostMascot';
+import { ProgressBar } from '@/components/Onboarding/ProgressBar';
+import { CategoryPicker } from '@/components/Onboarding/CategoryPicker';
+import { CreatorTypePicker } from '@/components/Onboarding/CreatorTypePicker';
+import { MicButton } from '@/components/Onboarding/MicButton';
+import { useAudioPlayer } from '@/components/VoiceBot/useAudioPlayer';
+import { InstagramConnect } from '@/components/InstagramConnect';
+import { CATEGORIES } from '@/components/Onboarding/CategoryPicker';
+
+type Step = 'greeting_1' | 'greeting_2' | 'category' | 'creator_type' | 'instagram';
+
+const STEP_TEXT: Record<Step, string> = {
+  greeting_1: "I'll help you through your journey..",
+  greeting_2: "Let's set-up your profile first",
+  category: 'Which category do you create content on?',
+  creator_type: 'Whom do you resonate with the most?',
+  instagram: "Great! Now let's connect your Instagram to personalise your picks.",
+};
+
+const STEP_TITLES: Partial<Record<Step, string>> = {
+  category: 'Choose your category',
+  creator_type: 'Choose your type',
+  instagram: 'Almost there!',
+};
+
+const STEP_SUBTITLES: Partial<Record<Step, string>> = {
+  category: 'Which category do you create content on?',
+  creator_type: 'Whom do you resonate with the most?',
+  instagram: 'Connect Instagram so we can personalise your product recommendations.',
+};
+
+// Steps that show the progress bar (0-indexed)
+const PICKER_STEPS: Step[] = ['category', 'creator_type', 'instagram'];
+
+const FLOW: Step[] = ['greeting_1', 'greeting_2', 'category', 'creator_type', 'instagram'];
 
 export default function OnboardingPage() {
-  const [creator, setCreator] = useState<Creator | null>(null);
-  const [loading, setLoading] = useState(true);
+  const router = useRouter();
+  const [step, setStep] = useState<Step>('greeting_1');
+  const [tapped, setTapped] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [selectedCreatorType, setSelectedCreatorType] = useState<string | null>(null);
 
-  useEffect(() => {
-    getCreator()
-      .then(setCreator)
-      .finally(() => setLoading(false));
+  const progressIndex = PICKER_STEPS.indexOf(step);
+  const isGreeting = step === 'greeting_1' || step === 'greeting_2';
+  const isPicker = PICKER_STEPS.includes(step);
+
+  const advance = useCallback(() => {
+    setStep((current) => {
+      const idx = FLOW.indexOf(current);
+      return (FLOW[idx + 1] as Step) ?? current;
+    });
   }, []);
 
+  // Auto-advance for instagram step after audio ends; otherwise useAudioPlayer advances greetings
+  const onAudioEnded = useCallback(() => {
+    if (step === 'greeting_1' || step === 'greeting_2') {
+      setTimeout(advance, 600);
+    }
+  }, [step, advance]);
+
+  const { play } = useAudioPlayer(onAudioEnded);
+
+  // Play TTS whenever step changes (after user taps to begin)
+  useEffect(() => {
+    if (!tapped) return;
+    play(STEP_TEXT[step]);
+  }, [step, tapped]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Voice input: match spoken word to a category
+  const handleVoiceCategory = useCallback((transcript: string) => {
+    const match = CATEGORIES.find(
+      (c) => transcript.includes(c.id) || transcript.includes(c.label.toLowerCase())
+    );
+    if (match) setSelectedCategory(match.id);
+  }, []);
+
+  // ── Greeting screens ──────────────────────────────────────────
+  if (isGreeting) {
+    return (
+      <main
+        className="min-h-screen bg-gray-50 flex flex-col items-center justify-center px-6 cursor-pointer select-none"
+        onClick={() => {
+          if (!tapped) {
+            setTapped(true);
+            play(STEP_TEXT[step]);
+          } else {
+            advance();
+          }
+        }}
+      >
+        <GhostMascot size="lg" />
+
+        {/* Speech bubble */}
+        <div className="mt-6 bg-white rounded-2xl rounded-tl-none px-6 py-4 shadow-md border border-gray-100 max-w-xs text-center">
+          <p className="text-gray-700 text-sm font-medium leading-relaxed">{STEP_TEXT[step]}</p>
+        </div>
+
+        {!tapped && (
+          <p className="mt-8 text-xs text-gray-400">Tap anywhere to begin</p>
+        )}
+        {tapped && (
+          <p className="mt-8 text-xs text-gray-400">Tap to continue</p>
+        )}
+      </main>
+    );
+  }
+
+  // ── Picker screens (category / creator type / instagram) ──────
   return (
-    <main className="min-h-screen flex flex-col">
-      {/* Header */}
-      <header className="px-6 py-5 flex items-center gap-3">
-        <span className="text-2xl">🛍️</span>
-        <span className="font-bold text-xl text-gray-800">Style Bazaar</span>
-      </header>
+    <main className="min-h-screen bg-gray-50 flex flex-col">
+      {/* Top bar: progress + close */}
+      <div className="flex items-center gap-3 px-4 pt-5 pb-3">
+        <div className="flex-1">
+          <ProgressBar current={progressIndex} total={3} />
+        </div>
+        <button
+          onClick={() => router.push('/')}
+          className="w-8 h-8 flex items-center justify-center rounded-full bg-white border border-gray-200 text-gray-500 hover:bg-gray-100 text-sm font-medium"
+          aria-label="Close"
+        >
+          ✕
+        </button>
+      </div>
 
-      <div className="flex-1 flex items-center justify-center px-6 py-12">
-        <div className="w-full max-w-lg">
-          {loading ? (
-            <div className="flex flex-col items-center gap-4">
-              <Spinner size="lg" />
-              <p className="text-gray-400 text-sm">Setting up your profile...</p>
-            </div>
-          ) : (
-            <div className="bg-white rounded-3xl shadow-xl border border-pink-100 p-8">
-              {/* Progress dots */}
-              <div className="flex justify-center gap-2 mb-8">
-                {['Welcome', 'Audience', 'Budget', 'Products'].map((label, i) => (
-                  <div key={label} className="flex flex-col items-center gap-1">
-                    <div className={`w-2.5 h-2.5 rounded-full ${i === 0 ? 'bg-pink-500' : 'bg-pink-200'}`} />
-                    <span className="text-[10px] text-gray-400">{label}</span>
-                  </div>
-                ))}
-              </div>
-
-              <div className="text-center mb-8">
-                <h1 className="text-2xl font-bold text-gray-900 mb-2">
-                  Hi {creator?.name?.split(' ')[0] ?? 'there'}! 👋
-                </h1>
-                <p className="text-gray-500 text-sm">
-                  Ritu will help you find the perfect products for your{' '}
-                  <span className="font-medium text-pink-600">{creator?.niche ?? 'content'}</span> audience
-                </p>
-              </div>
-
-              <VoiceBotWidget
-                niche={creator?.niche ?? 'fashion'}
-                mode="onboarding"
-              />
-            </div>
-          )}
+      {/* Ghost + speech bubble */}
+      <div className="flex flex-col items-center pt-4 pb-2">
+        <GhostMascot size="md" />
+        <div className="mt-3 bg-white rounded-xl rounded-tl-none px-4 py-2.5 shadow-sm border border-gray-100 max-w-xs">
+          <p className="text-gray-600 text-xs leading-relaxed">{STEP_TEXT[step]}</p>
         </div>
       </div>
+
+      {/* Step title */}
+      <div className="px-5 pt-5 pb-3">
+        <h2 className="text-2xl font-extrabold text-gray-900">{STEP_TITLES[step]}</h2>
+        <p className="text-sm text-gray-400 mt-1">{STEP_SUBTITLES[step]}</p>
+      </div>
+
+      {/* Content area */}
+      <div className="flex-1 overflow-y-auto px-5 pb-28">
+        {step === 'category' && (
+          <CategoryPicker
+            selected={selectedCategory}
+            onSelect={(id) => {
+              setSelectedCategory(id);
+              setTimeout(advance, 300);
+            }}
+          />
+        )}
+
+        {step === 'creator_type' && (
+          <CreatorTypePicker
+            selected={selectedCreatorType}
+            onSelect={(id) => {
+              setSelectedCreatorType(id);
+            }}
+          />
+        )}
+
+        {step === 'instagram' && (
+          <div className="flex flex-col items-center gap-6 pt-6">
+            <InstagramConnect />
+            <p className="text-xs text-gray-400 text-center">
+              No posting required · 100% free · Takes 30 seconds
+            </p>
+          </div>
+        )}
+      </div>
+
+      {/* Bottom action bar */}
+      {isPicker && step !== 'instagram' && (
+        <div className="fixed bottom-0 left-0 right-0 flex justify-center pb-8 pt-4 bg-gradient-to-t from-gray-50 via-gray-50 to-transparent">
+          {step === 'category' && (
+            <MicButton onResult={handleVoiceCategory} />
+          )}
+          {step === 'creator_type' && selectedCreatorType && (
+            <button
+              onClick={advance}
+              className="px-10 py-3.5 rounded-2xl bg-pink-600 text-white font-bold shadow-lg shadow-pink-200 hover:bg-pink-700 transition-colors"
+            >
+              Continue →
+            </button>
+          )}
+        </div>
+      )}
     </main>
   );
 }

@@ -18,7 +18,7 @@ COOKIE_SAMESITE = os.getenv("COOKIE_SAMESITE", "lax")
 async def instagram_login(response: Response, mock: bool = False):
     if MOCK_AUTH or mock:
         session_id = create_session(MOCK_CREATOR.copy())
-        redirect = RedirectResponse(url=f"{FRONTEND_URL}/onboarding")
+        redirect = RedirectResponse(url=f"{FRONTEND_URL}/for-you")
         redirect.set_cookie(
             "session_id",
             session_id,
@@ -44,7 +44,7 @@ async def instagram_callback(code: str, state: str = ""):
         creator = MOCK_CREATOR.copy()
 
     session_id = create_session(creator)
-    redirect = RedirectResponse(url=f"{FRONTEND_URL}/onboarding")
+    redirect = RedirectResponse(url=f"{FRONTEND_URL}/for-you")
     redirect.set_cookie(
         "session_id",
         session_id,

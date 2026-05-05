@@ -89,8 +89,8 @@ export async function getTTSAudio(text: string): Promise<Blob> {
 }
 
 export function getInstagramAuthUrl(): string {
+  if (IS_MOCK) return '/for-you';
   // Always client-side (user click) — relative URL works fine
   const base = process.env.NEXT_PUBLIC_API_URL ?? '/_/backend';
-  if (IS_MOCK) return `${base}/auth/instagram?mock=true`;
   return `${base}/auth/instagram`;
 }
