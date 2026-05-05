@@ -1,5 +1,5 @@
-import { Creator, AudienceProfile, Product, AgeGroup, PriceRange } from './types';
-import { MOCK_CREATOR, MOCK_AUDIENCE, MOCK_PRODUCTS } from './mock-creator';
+import { Creator, AudienceProfile, Product, AgeGroup, PriceRange, BuyerInsights } from './types';
+import { MOCK_CREATOR, MOCK_AUDIENCE, MOCK_PRODUCTS, MOCK_BUYER_INSIGHTS } from './mock-creator';
 
 const IS_MOCK = process.env.NEXT_PUBLIC_MOCK_AUTH === 'true';
 
@@ -75,6 +75,11 @@ export async function getRecommendedProducts(
 export async function getOnboardingStatus(): Promise<{ complete: boolean }> {
   if (IS_MOCK) return { complete: false };
   return apiFetch<{ complete: boolean }>('/api/onboarding/status');
+}
+
+export async function getBuyerInsights(): Promise<BuyerInsights> {
+  if (IS_MOCK) return MOCK_BUYER_INSIGHTS;
+  return apiFetch<BuyerInsights>('/api/creator/insights');
 }
 
 export async function saveOnboardingProfile(data: {

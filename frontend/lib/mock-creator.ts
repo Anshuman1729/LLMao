@@ -1,4 +1,4 @@
-import { Creator, AudienceProfile, Product } from './types';
+import { Creator, AudienceProfile, Product, BuyerInsights } from './types';
 
 export const MOCK_CREATOR: Creator = {
   id: 'mock_001',
@@ -23,6 +23,47 @@ export const MOCK_AUDIENCE: AudienceProfile = {
   top_locations: ['Mumbai', 'Delhi', 'Bangalore', 'Hyderabad', 'Pune'],
   income_bracket: 'lower-middle',
   interests: ['fashion', 'beauty', 'lifestyle'],
+};
+
+export const MOCK_BUYER_INSIGHTS: BuyerInsights = {
+  top_categories: [
+    { name: 'Fashion', pct: 85, emoji: '👗', is_top: true },
+    { name: 'Home Decor', pct: 10, emoji: '🛋️' },
+    { name: 'Baby Products', pct: 5, emoji: '👶' },
+  ],
+  price_behaviour: {
+    sweet_spot: '₹199–399',
+    highest_order: '₹799',
+    discount_pull: 'HIGH',
+    tip: 'Mentioning price drop or under ₹300 in hook increases CTR by ~2x',
+  },
+  content_engagement: {
+    language: 'Hinglish',
+    narration: 'Voice-over',
+    video_style: 'Unboxing',
+    music: 'Soothing',
+  },
+  peak_hours: [2,2,1,1,2,4,8,14,18,22,26,30,34,32,28,30,36,44,68,56,48,38,28,16],
+  peak_hour: 18,
+  peak_tip: 'Post on 7 PM for best reach',
+  gender: { female: 78, male: 22 },
+  age_groups: [
+    { label: '16–20', value: 12 },
+    { label: '21–30 Yrs', value: 55 },
+    { label: '31–40', value: 24 },
+    { label: '41+', value: 9 },
+  ],
+  primary_buyer_tip: 'Your primary buyer is young women',
+  tier_distribution: { metro: 12, tier2: 58, tier3: 30 },
+  top_cities: ['Pune', 'Jaipur', 'Indore', 'Lucknow', 'Patna', 'Mumbai'],
+  city_count: 50,
+  tier_tip: 'Tier 2 dominates, use Hinglish, show affordable options, mention free delivery.',
+  order_frequency: { repeat: 34, first_time: 66 },
+  product_suggestions: [
+    { name: 'Kurtis/Tops', emoji: '👗', price_label: 'Under ₹300' },
+    { name: 'Kitchen item', emoji: '🍳', price_label: 'Hacks/tools' },
+    { name: 'Baby items', emoji: '👶', price_label: 'Unique finds' },
+  ],
 };
 
 export const MOCK_PRODUCTS: Product[] = [
