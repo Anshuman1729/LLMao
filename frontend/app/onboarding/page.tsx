@@ -8,35 +8,31 @@ import { CategoryPicker } from '@/components/Onboarding/CategoryPicker';
 import { CreatorTypePicker } from '@/components/Onboarding/CreatorTypePicker';
 import { MicButton } from '@/components/Onboarding/MicButton';
 import { useAudioPlayer } from '@/components/VoiceBot/useAudioPlayer';
-import { InstagramConnect } from '@/components/InstagramConnect';
 import { CATEGORIES } from '@/components/Onboarding/CategoryPicker';
 
-type Step = 'greeting_1' | 'greeting_2' | 'category' | 'creator_type' | 'instagram';
+type Step = 'greeting_1' | 'greeting_2' | 'category' | 'creator_type';
 
 const STEP_TEXT: Record<Step, string> = {
   greeting_1: "I'll help you through your journey..",
   greeting_2: "Let's set-up your profile first",
   category: 'Which category do you create content on?',
   creator_type: 'Whom do you resonate with the most?',
-  instagram: "Great! Now let's connect your Instagram to personalise your picks.",
 };
 
 const STEP_TITLES: Partial<Record<Step, string>> = {
   category: 'Choose your category',
   creator_type: 'Choose your type',
-  instagram: 'Almost there!',
 };
 
 const STEP_SUBTITLES: Partial<Record<Step, string>> = {
   category: 'Which category do you create content on?',
   creator_type: 'Whom do you resonate with the most?',
-  instagram: 'Connect Instagram so we can personalise your product recommendations.',
 };
 
 // Steps that show the progress bar (0-indexed)
-const PICKER_STEPS: Step[] = ['category', 'creator_type', 'instagram'];
+const PICKER_STEPS: Step[] = ['category', 'creator_type'];
 
-const FLOW: Step[] = ['greeting_1', 'greeting_2', 'category', 'creator_type', 'instagram'];
+const FLOW: Step[] = ['greeting_1', 'greeting_2', 'category', 'creator_type'];
 
 export default function OnboardingPage() {
   const router = useRouter();
@@ -56,12 +52,9 @@ export default function OnboardingPage() {
     });
   }, []);
 
-  // Auto-advance for instagram step after audio ends; otherwise useAudioPlayer advances greetings
   const onAudioEnded = useCallback(() => {
-    if (step === 'greeting_1' || step === 'greeting_2') {
-      setTimeout(advance, 600);
-    }
-  }, [step, advance]);
+    // Audio playback finished — user must tap to continue
+  }, []);
 
   const { play } = useAudioPlayer(onAudioEnded);
 
@@ -116,7 +109,7 @@ export default function OnboardingPage() {
       {/* Top bar: progress + close */}
       <div className="flex items-center gap-3 px-4 pt-5 pb-3">
         <div className="flex-1">
-          <ProgressBar current={progressIndex} total={3} />
+          <ProgressBar current={progressIndex} total={2} />
         </div>
         <button
           onClick={() => router.push('/')}
@@ -162,25 +155,17 @@ export default function OnboardingPage() {
           />
         )}
 
-        {step === 'instagram' && (
-          <div className="flex flex-col items-center gap-6 pt-6">
-            <InstagramConnect />
-            <p className="text-xs text-gray-400 text-center">
-              No posting required · 100% free · Takes 30 seconds
-            </p>
-          </div>
-        )}
       </div>
 
       {/* Bottom action bar */}
-      {isPicker && step !== 'instagram' && (
+      {isPicker && (
         <div className="fixed bottom-0 left-0 right-0 flex justify-center pb-8 pt-4 bg-gradient-to-t from-gray-50 via-gray-50 to-transparent">
           {step === 'category' && (
             <MicButton onResult={handleVoiceCategory} />
           )}
           {step === 'creator_type' && selectedCreatorType && (
             <button
-              onClick={advance}
+              onClick={() => router.push('/for-you')}
               className="px-10 py-3.5 rounded-2xl bg-pink-600 text-white font-bold shadow-lg shadow-pink-200 hover:bg-pink-700 transition-colors"
             >
               Continue →
