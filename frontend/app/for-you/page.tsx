@@ -214,7 +214,11 @@ export default function ForYouPage() {
           </p>
           <div className="flex gap-3 overflow-x-auto pb-1 -mx-1 px-1 scrollbar-none">
             {CONTENT_IDEAS.map((idea, i) => (
-              <div key={i} className="flex-shrink-0 w-28 h-40 rounded-xl overflow-hidden relative">
+              <div
+                key={i}
+                className="flex-shrink-0 w-28 h-40 rounded-xl overflow-hidden relative cursor-pointer"
+                onClick={() => router.push('/content-ideas')}
+              >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={idea.img} alt="" className="w-full h-full object-cover" />
                 <div className="absolute top-2 right-2 bg-black/70 text-white text-[9px] font-bold px-1.5 py-0.5 rounded">
