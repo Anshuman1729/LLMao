@@ -1,0 +1,25 @@
+# Dependencies
+node_modules/
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+env/
+
+# Build outputs
+.next/
+dist/
+build/
+out/
+
+# Environment files (never commit real secrets)
+backend/.env
+frontend/.env.local
+*.env
+
+# Misc
+.DS_Store
+*.log
+.idea/
+.vscode/
