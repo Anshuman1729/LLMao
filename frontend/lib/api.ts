@@ -77,6 +77,21 @@ export async function getOnboardingStatus(): Promise<{ complete: boolean }> {
   return apiFetch<{ complete: boolean }>('/api/onboarding/status');
 }
 
+export async function saveOnboardingProfile(data: {
+  name: string;
+  username: string;
+  follower_count: number;
+  category: string;
+  creator_type_id: string;
+}): Promise<void> {
+  if (IS_MOCK) return;
+  await apiFetch<{ ok: boolean }>('/api/onboarding/profile', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  });
+}
+
 export async function getTTSAudio(text: string): Promise<Blob> {
   const res = await fetch(`${getApiBase()}/api/voice/tts`, {
     method: 'POST',

@@ -9,6 +9,8 @@ export interface Creator {
   bio: string;
   niche: Niche;
   onboarding_complete: boolean;
+  creator_type_id?: string;
+  category?: string;
 }
 
 export interface AgeDistribution {
