@@ -1,11 +1,38 @@
 import { Creator, AudienceProfile, Product, AgeGroup, PriceRange } from './types';
 import { MOCK_CREATOR, MOCK_AUDIENCE, MOCK_PRODUCTS } from './mock-creator';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 const IS_MOCK = process.env.NEXT_PUBLIC_MOCK_AUTH === 'true';
 
+/**
+ * Returns the API base URL that works in every context:
+ *
+ * - Local dev:  NEXT_PUBLIC_API_URL=http://localhost:8000  → absolute URL, both SSR + client
+ * - Vercel prod: NEXT_PUBLIC_API_URL=/_/backend
+ *     Client-side → relative URL works (same domain)
+ *     SSR (server component) → relative URLs are invalid in Node.js fetch,
+ *       so we prepend the deployment URL that Vercel sets via VERCEL_URL
+ */
+function getApiBase(): string {
+  const configured = process.env.NEXT_PUBLIC_API_URL;
+
+  // Absolute URL (starts with http/https) → works everywhere
+  if (configured && /^https?:\/\//.test(configured)) return configured;
+
+  // Client side → relative URL is fine on the same domain
+  if (typeof window !== 'undefined') return configured ?? '/_/backend';
+
+  // Server side (SSR / Server Components) → must be absolute
+  // VERCEL_URL is injected automatically by Vercel, without the protocol
+  if (process.env.VERCEL_URL) {
+    return `https://${process.env.VERCEL_URL}${configured ?? '/_/backend'}`;
+  }
+
+  // Local dev SSR fallback
+  return 'http://localhost:8000';
+}
+
 async function apiFetch<T>(path: string, options?: RequestInit): Promise<T> {
-  const res = await fetch(`${API_URL}${path}`, {
+  const res = await fetch(`${getApiBase()}${path}`, {
     credentials: 'include',
     ...options,
   });
@@ -51,7 +78,7 @@ export async function getOnboardingStatus(): Promise<{ complete: boolean }> {
 }
 
 export async function getTTSAudio(text: string): Promise<Blob> {
-  const res = await fetch(`${API_URL}/api/voice/tts`, {
+  const res = await fetch(`${getApiBase()}/api/voice/tts`, {
     method: 'POST',
     credentials: 'include',
     headers: { 'Content-Type': 'application/json' },
@@ -62,6 +89,8 @@ export async function getTTSAudio(text: string): Promise<Blob> {
 }
 
 export function getInstagramAuthUrl(): string {
-  if (IS_MOCK) return `${API_URL}/auth/instagram?mock=true`;
-  return `${API_URL}/auth/instagram`;
+  // Always client-side (user click) — relative URL works fine
+  const base = process.env.NEXT_PUBLIC_API_URL ?? '/_/backend';
+  if (IS_MOCK) return `${base}/auth/instagram?mock=true`;
+  return `${base}/auth/instagram`;
 }
