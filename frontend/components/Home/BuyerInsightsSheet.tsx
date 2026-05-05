@@ -63,6 +63,32 @@ function PeakHoursChart({ hours, peakHour }: { hours: number[]; peakHour: number
   );
 }
 
+function PostingWindowChart() {
+  const slots = [
+    { label: 'Before 8AM', active: false },
+    { label: '8AM–12PM', active: true },
+    { label: '12PM–6PM', active: false },
+    { label: 'After 6PM', active: true },
+  ];
+  return (
+    <div className="mt-3">
+      <div className="flex items-end gap-3 h-20">
+        {slots.map((s) => (
+          <div key={s.label} className="flex-1 flex flex-col items-center gap-1.5">
+            <div className="w-full flex flex-col justify-end" style={{ height: '72px' }}>
+              <div
+                className={`w-full rounded-t-lg ${s.active ? 'bg-[#FF2D7B]' : 'bg-gray-100'}`}
+                style={{ height: s.active ? '90%' : '20%' }}
+              />
+            </div>
+            <span className="text-[9px] text-gray-500 text-center leading-tight">{s.label}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function GenderBar({ female, male }: { female: number; male: number }) {
   return (
     <div className="mt-3">
@@ -198,14 +224,14 @@ export function BuyerInsightsSheet({ insights, open, onClose, niche = 'fashion' 
             ))}
           </div>
 
-          {/* Get products now CTA */}
+          {/* Best product matches CTA */}
           <div
             className="flex items-center gap-3 bg-pink-50 rounded-2xl p-4 mt-4 cursor-pointer"
             onClick={() => { onClose(); router.push('/products'); }}
           >
             <div className="w-10 h-10 bg-pink-100 rounded-xl flex items-center justify-center text-xl">🛍️</div>
             <div className="flex-1">
-              <p className="text-sm font-bold text-gray-900">Get products now</p>
+              <p className="text-sm font-bold text-gray-900">Best product matches for you</p>
               <p className="text-xs text-gray-500">For your audience &amp; your style</p>
             </div>
             <span className="text-gray-400 text-sm">›</span>
@@ -252,16 +278,14 @@ export function BuyerInsightsSheet({ insights, open, onClose, niche = 'fashion' 
           {/* ── WHEN DO THEY BUY ── */}
           <SectionDivider label="When do they buy" />
 
-          <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Daily</p>
-          <PeakHoursChart hours={insights.peak_hours} peakHour={insights.peak_hour} />
-          <TipBox text={insights.peak_tip} />
+          <PostingWindowChart />
+          <TipBox text="Post either before noon or after 6 PM to maximise reach" />
 
           {/* ── WHO BUYS ── */}
           <SectionDivider label="Who Buys" />
 
-          <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Gender &amp; Age</p>
+          <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Gender</p>
           <GenderBar female={insights.gender.female} male={insights.gender.male} />
-          <AgeBarChart groups={insights.age_groups} />
           <TipBox text={insights.primary_buyer_tip} />
 
           {/* ── WHERE THEY BUY FROM ── */}
