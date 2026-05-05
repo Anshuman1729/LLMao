@@ -276,7 +276,7 @@ export function BuyerInsightsSheet({ insights, open, onClose, niche = 'fashion' 
           </div>
 
           {/* ── WHEN DO THEY BUY ── */}
-          <SectionDivider label="Best time to post" />
+          <SectionDivider label="When do they buy" />
 
           <PostingWindowChart />
           <TipBox text="Post either before noon or after 6 PM to maximise reach" />
