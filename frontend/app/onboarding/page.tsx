@@ -42,7 +42,7 @@ export default function OnboardingPage() {
   const [step, setStep] = useState<Step>('greeting_1');
   const [tapped, setTapped] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [selectedCreatorType, setSelectedCreatorType] = useState<string | null>(null);
+  const [selectedCreatorTypes, setSelectedCreatorTypes] = useState<string[]>([]);
 
   // user_info step state
   const [userName, setUserName] = useState('');
@@ -82,7 +82,7 @@ export default function OnboardingPage() {
   }, []);
 
   const handleFinish = useCallback(async () => {
-    if (!userName.trim() || !selectedCategory || !selectedCreatorType) return;
+    if (!userName.trim() || !selectedCategory) return;
     setSubmitting(true);
     try {
       await saveOnboardingProfile({
@@ -90,7 +90,7 @@ export default function OnboardingPage() {
         username: userHandle.trim().replace(/^@/, ''),
         follower_count: parseInt(userFollowers) || 0,
         category: selectedCategory,
-        creator_type_id: selectedCreatorType,
+        creator_type_ids: selectedCreatorTypes,
       });
     } catch {
       // Non-fatal — navigate anyway
@@ -98,7 +98,7 @@ export default function OnboardingPage() {
       setSubmitting(false);
       router.push('/for-you');
     }
-  }, [userName, userHandle, userFollowers, selectedCategory, selectedCreatorType, router]);
+  }, [userName, userHandle, userFollowers, selectedCategory, selectedCreatorTypes, router]);
 
   // ── Greeting screens ──────────────────────────────────────────
   if (isGreeting) {
@@ -176,10 +176,9 @@ export default function OnboardingPage() {
 
         {step === 'creator_type' && (
           <CreatorTypePicker
-            selected={selectedCreatorType}
-            onSelect={(id) => {
-              setSelectedCreatorType(id);
-            }}
+            niche={selectedCategory}
+            selected={selectedCreatorTypes}
+            onSelect={setSelectedCreatorTypes}
           />
         )}
 
@@ -231,12 +230,12 @@ export default function OnboardingPage() {
           {step === 'category' && (
             <MicButton onResult={handleVoiceCategory} />
           )}
-          {step === 'creator_type' && selectedCreatorType && (
+          {step === 'creator_type' && selectedCreatorTypes.length > 0 && (
             <button
               onClick={advance}
               className="px-10 py-3.5 rounded-2xl bg-pink-600 text-white font-bold shadow-lg shadow-pink-200 hover:bg-pink-700 transition-colors"
             >
-              Continue →
+              Continue ({selectedCreatorTypes.length} selected) →
             </button>
           )}
           {step === 'user_info' && (

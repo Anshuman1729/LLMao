@@ -1,7 +1,7 @@
 import os
 from fastapi import APIRouter, Cookie, Response
 from pydantic import BaseModel
-from typing import Optional
+from typing import List, Optional
 
 from services.session import get_session, update_session, create_session
 
@@ -34,7 +34,7 @@ class ProfileUpdate(BaseModel):
     username: str
     follower_count: int
     category: str
-    creator_type_id: str
+    creator_type_ids: List[str] = []
 
 
 @router.post("/api/onboarding/profile")
@@ -50,7 +50,7 @@ async def save_profile(
         "follower_count": body.follower_count,
         "niche": niche,
         "category": body.category,
-        "creator_type_id": body.creator_type_id,
+        "creator_type_ids": body.creator_type_ids,
         "onboarding_complete": True,
     }
     # Build on existing session or start fresh for new users

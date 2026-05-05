@@ -87,7 +87,7 @@ export async function saveOnboardingProfile(data: {
   username: string;
   follower_count: number;
   category: string;
-  creator_type_id: string;
+  creator_type_ids: string[];
 }): Promise<void> {
   if (IS_MOCK) return;
   await apiFetch<{ ok: boolean }>('/api/onboarding/profile', {
