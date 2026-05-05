@@ -1,8 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { VIBES, YOUR_PRODUCTS } from '@/lib/mock-products';
+import { getCreator } from '@/lib/api';
+import { getVibesForNiche, getYourProductsForNiche } from '@/lib/mock-products';
 
 type Tab = 'orders' | 'wishlist' | 'paste';
 
@@ -32,6 +33,16 @@ const TABS: Array<{ id: Tab; icon: string; label: string }> = [
 export default function ProductsPage() {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<Tab>('orders');
+  const [niche, setNiche] = useState<string>('fashion');
+
+  useEffect(() => {
+    getCreator()
+      .then((c) => setNiche(c.niche ?? 'fashion'))
+      .catch(() => {});
+  }, []);
+
+  const vibes = getVibesForNiche(niche);
+  const yourProducts = getYourProductsForNiche(niche);
 
   return (
     <main className="min-h-screen bg-white">
@@ -50,25 +61,32 @@ export default function ProductsPage() {
             </h1>
             <p className="text-white/50 text-xs">Exclusive unlimited returns!</p>
           </div>
-          {/* Sofa illustration using emojis */}
           <div className="flex flex-col items-center gap-1 mb-2 opacity-90">
-            <span className="text-4xl">🛋️</span>
-            <span className="text-2xl">🪔</span>
+            {niche === 'home' ? (
+              <>
+                <span className="text-4xl">🏠</span>
+                <span className="text-2xl">🪴</span>
+              </>
+            ) : (
+              <>
+                <span className="text-4xl">🛋️</span>
+                <span className="text-2xl">🪔</span>
+              </>
+            )}
           </div>
         </div>
       </div>
 
       <div className="px-4 -mt-4">
-        {/* White content card sits over the dark header */}
         <div className="bg-white rounded-t-3xl pt-5 flex flex-col gap-6">
           {/* Choose Your Vibe */}
           <section>
             <SectionDivider label="Choose your vibe" />
             <div className="flex flex-col gap-3">
-              {VIBES.map((vibe) => (
+              {vibes.map((vibe) => (
                 <button
                   key={vibe.id}
-                  onClick={() => router.push(`/products/${vibe.id}`)}
+                  onClick={() => router.push(`/products/${vibe.id}?niche=${niche}`)}
                   className="flex items-center gap-4 border border-gray-100 rounded-2xl p-3 shadow-sm text-left active:scale-[0.98] transition-transform w-full"
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -76,6 +94,9 @@ export default function ProductsPage() {
                     src={vibe.img}
                     alt={vibe.title}
                     className="w-16 h-16 rounded-xl object-cover flex-shrink-0"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = 'https://placehold.co/200x200/f3f4f6/9ca3af?text=Vibe';
+                    }}
                   />
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-bold text-gray-900 mb-0.5">{vibe.title}</p>
@@ -111,7 +132,7 @@ export default function ProductsPage() {
 
             {/* 3-column product grid */}
             <div className="grid grid-cols-3 gap-3">
-              {YOUR_PRODUCTS.map((product) => (
+              {yourProducts.map((product) => (
                 <div key={product.id} className="flex flex-col">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
