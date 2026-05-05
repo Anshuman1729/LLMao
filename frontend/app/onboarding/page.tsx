@@ -8,38 +8,47 @@ import { CategoryPicker } from '@/components/Onboarding/CategoryPicker';
 import { CreatorTypePicker } from '@/components/Onboarding/CreatorTypePicker';
 import { MicButton } from '@/components/Onboarding/MicButton';
 import { useAudioPlayer } from '@/components/VoiceBot/useAudioPlayer';
+import { saveOnboardingProfile } from '@/lib/api';
 import { CATEGORIES } from '@/components/Onboarding/CategoryPicker';
 
-type Step = 'greeting_1' | 'greeting_2' | 'category' | 'creator_type';
+type Step = 'greeting_1' | 'greeting_2' | 'category' | 'creator_type' | 'user_info';
 
 const STEP_TEXT: Record<Step, string> = {
   greeting_1: "I'll help you through your journey..",
   greeting_2: "Let's set-up your profile first",
   category: 'Which category do you create content on?',
-  creator_type: 'Whom do you resonate with the most?',
+  creator_type: 'Who do you look up to as a creator?',
+  user_info: 'Almost there! Tell us a little about yourself.',
 };
 
 const STEP_TITLES: Partial<Record<Step, string>> = {
   category: 'Choose your category',
-  creator_type: 'Choose your type',
+  creator_type: 'Your inspiration',
+  user_info: 'Your profile',
 };
 
 const STEP_SUBTITLES: Partial<Record<Step, string>> = {
   category: 'Which category do you create content on?',
-  creator_type: 'Whom do you resonate with the most?',
+  creator_type: 'Pick the creator whose style you aspire to.',
+  user_info: 'This is how you\'ll appear on your dashboard.',
 };
 
-// Steps that show the progress bar (0-indexed)
-const PICKER_STEPS: Step[] = ['category', 'creator_type'];
+const PICKER_STEPS: Step[] = ['category', 'creator_type', 'user_info'];
 
-const FLOW: Step[] = ['greeting_1', 'greeting_2', 'category', 'creator_type'];
+const FLOW: Step[] = ['greeting_1', 'greeting_2', 'category', 'creator_type', 'user_info'];
 
 export default function OnboardingPage() {
   const router = useRouter();
   const [step, setStep] = useState<Step>('greeting_1');
   const [tapped, setTapped] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [selectedCreatorType, setSelectedCreatorType] = useState<string | null>(null);
+  const [selectedCreatorTypes, setSelectedCreatorTypes] = useState<string[]>([]);
+
+  // user_info step state
+  const [userName, setUserName] = useState('');
+  const [userHandle, setUserHandle] = useState('');
+  const [userFollowers, setUserFollowers] = useState('');
+  const [submitting, setSubmitting] = useState(false);
 
   const progressIndex = PICKER_STEPS.indexOf(step);
   const isGreeting = step === 'greeting_1' || step === 'greeting_2';
@@ -72,6 +81,25 @@ export default function OnboardingPage() {
     if (match) setSelectedCategory(match.id);
   }, []);
 
+  const handleFinish = useCallback(async () => {
+    if (!userName.trim() || !selectedCategory) return;
+    setSubmitting(true);
+    try {
+      await saveOnboardingProfile({
+        name: userName.trim(),
+        username: userHandle.trim().replace(/^@/, ''),
+        follower_count: parseInt(userFollowers) || 0,
+        category: selectedCategory,
+        creator_type_ids: selectedCreatorTypes,
+      });
+    } catch {
+      // Non-fatal — navigate anyway
+    } finally {
+      setSubmitting(false);
+      router.push('/for-you');
+    }
+  }, [userName, userHandle, userFollowers, selectedCategory, selectedCreatorTypes, router]);
+
   // ── Greeting screens ──────────────────────────────────────────
   if (isGreeting) {
     return (
@@ -103,13 +131,13 @@ export default function OnboardingPage() {
     );
   }
 
-  // ── Picker screens (category / creator type / instagram) ──────
+  // ── Picker screens ────────────────────────────────────────────
   return (
     <main className="min-h-screen bg-gray-50 flex flex-col">
       {/* Top bar: progress + close */}
       <div className="flex items-center gap-3 px-4 pt-5 pb-3">
         <div className="flex-1">
-          <ProgressBar current={progressIndex} total={2} />
+          <ProgressBar current={progressIndex} total={3} />
         </div>
         <button
           onClick={() => router.push('/')}
@@ -148,13 +176,52 @@ export default function OnboardingPage() {
 
         {step === 'creator_type' && (
           <CreatorTypePicker
-            selected={selectedCreatorType}
-            onSelect={(id) => {
-              setSelectedCreatorType(id);
-            }}
+            niche={selectedCategory}
+            selected={selectedCreatorTypes}
+            onSelect={setSelectedCreatorTypes}
           />
         )}
 
+        {step === 'user_info' && (
+          <div className="flex flex-col gap-4 pt-2">
+            <div className="flex flex-col gap-1.5">
+              <label className="text-xs font-semibold text-gray-600 uppercase tracking-wide">Your name</label>
+              <input
+                type="text"
+                placeholder="e.g. Priya Sharma"
+                value={userName}
+                onChange={(e) => setUserName(e.target.value)}
+                className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white text-sm text-gray-800 placeholder-gray-400 outline-none focus:border-pink-400 transition-colors"
+              />
+            </div>
+
+            <div className="flex flex-col gap-1.5">
+              <label className="text-xs font-semibold text-gray-600 uppercase tracking-wide">Instagram handle</label>
+              <div className="flex items-center bg-white border border-gray-200 rounded-xl px-4 py-3 focus-within:border-pink-400 transition-colors">
+                <span className="text-gray-400 text-sm mr-1">@</span>
+                <input
+                  type="text"
+                  placeholder="yourhandle"
+                  value={userHandle}
+                  onChange={(e) => setUserHandle(e.target.value.replace(/^@/, ''))}
+                  className="flex-1 text-sm text-gray-800 placeholder-gray-400 outline-none bg-transparent"
+                />
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-1.5">
+              <label className="text-xs font-semibold text-gray-600 uppercase tracking-wide">Followers</label>
+              <input
+                type="number"
+                placeholder="e.g. 12000"
+                value={userFollowers}
+                onChange={(e) => setUserFollowers(e.target.value)}
+                min={0}
+                className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white text-sm text-gray-800 placeholder-gray-400 outline-none focus:border-pink-400 transition-colors"
+              />
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Bottom action bar */}
@@ -163,12 +230,21 @@ export default function OnboardingPage() {
           {step === 'category' && (
             <MicButton onResult={handleVoiceCategory} />
           )}
-          {step === 'creator_type' && selectedCreatorType && (
+          {step === 'creator_type' && selectedCreatorTypes.length > 0 && (
             <button
-              onClick={() => router.push('/for-you')}
+              onClick={advance}
               className="px-10 py-3.5 rounded-2xl bg-pink-600 text-white font-bold shadow-lg shadow-pink-200 hover:bg-pink-700 transition-colors"
             >
-              Continue →
+              Continue ({selectedCreatorTypes.length} selected) →
+            </button>
+          )}
+          {step === 'user_info' && (
+            <button
+              onClick={handleFinish}
+              disabled={!userName.trim() || submitting}
+              className="px-10 py-3.5 rounded-2xl bg-pink-600 text-white font-bold shadow-lg shadow-pink-200 hover:bg-pink-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {submitting ? 'Setting up...' : 'Get Started →'}
             </button>
           )}
         </div>

@@ -9,6 +9,8 @@ export interface Creator {
   bio: string;
   niche: Niche;
   onboarding_complete: boolean;
+  creator_type_ids?: string[];
+  category?: string;
 }
 
 export interface AgeDistribution {
@@ -56,6 +58,34 @@ export type BotStep =
 
 export type PriceRange = 'budget' | 'mid' | 'premium';
 export type AgeGroup = '13-17' | '18-24' | '25-34';
+
+export interface BuyerInsights {
+  top_categories: Array<{ name: string; pct: number; emoji: string; is_top?: boolean }>;
+  price_behaviour: {
+    sweet_spot: string;
+    highest_order: string;
+    discount_pull: 'HIGH' | 'MEDIUM' | 'LOW';
+    tip: string;
+  };
+  content_engagement: {
+    language: string;
+    narration: string;
+    video_style: string;
+    music: string;
+  };
+  peak_hours: number[];
+  peak_hour: number;
+  peak_tip: string;
+  gender: { female: number; male: number };
+  age_groups: Array<{ label: string; value: number }>;
+  primary_buyer_tip: string;
+  tier_distribution: { metro: number; tier2: number; tier3: number };
+  top_cities: string[];
+  city_count: number;
+  tier_tip: string;
+  order_frequency: { repeat: number; first_time: number };
+  product_suggestions: Array<{ name: string; emoji: string; price_label: string }>;
+}
 
 export interface OnboardingAnswers {
   ageGroup: AgeGroup | null;

@@ -3,6 +3,7 @@ from typing import Optional
 
 from services.session import get_session, MOCK_CREATOR
 from data.mock_audience import MOCK_AUDIENCE
+from data.mock_insights import MOCK_INSIGHTS
 
 router = APIRouter()
 
@@ -26,3 +27,10 @@ async def get_audience(session_id: Optional[str] = Cookie(default=None)):
     creator = _get_creator(session_id)
     niche = creator.get("niche", "lifestyle")
     return MOCK_AUDIENCE.get(niche, MOCK_AUDIENCE["lifestyle"])
+
+
+@router.get("/api/creator/insights")
+async def get_insights(session_id: Optional[str] = Cookie(default=None)):
+    creator = _get_creator(session_id)
+    niche = creator.get("niche", "lifestyle")
+    return MOCK_INSIGHTS.get(niche, MOCK_INSIGHTS["lifestyle"])
