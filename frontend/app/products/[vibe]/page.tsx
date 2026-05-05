@@ -1,8 +1,12 @@
 'use client';
 
-import { useState } from 'react';
-import { useParams, useRouter } from 'next/navigation';
-import { CATEGORY_PRODUCTS, CATEGORY_FILTERS, FILTER_LABELS } from '@/lib/mock-products';
+import { useState, Suspense } from 'react';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
+import {
+  getCategoryFiltersForNiche,
+  getFilterLabelsForNiche,
+  getCategoryProductsForNiche,
+} from '@/lib/mock-products';
 
 function BackArrow() {
   return (
@@ -12,13 +16,22 @@ function BackArrow() {
   );
 }
 
-export default function VibeProductsPage() {
+function VibeProductsContent() {
   const { vibe } = useParams<{ vibe: string }>();
+  const searchParams = useSearchParams();
   const router = useRouter();
-  const [selected, setSelected] = useState<string>(vibe ?? CATEGORY_FILTERS[0]);
+  const niche = searchParams.get('niche') ?? 'fashion';
 
-  const products = CATEGORY_PRODUCTS[selected] ?? [];
-  const headerTitle = (FILTER_LABELS[selected] ?? selected).toUpperCase();
+  const categoryFilters = getCategoryFiltersForNiche(niche);
+  const filterLabels = getFilterLabelsForNiche(niche);
+  const categoryProducts = getCategoryProductsForNiche(niche);
+
+  // If the vibe matches a category filter for this niche, use it; otherwise default to first filter
+  const initialFilter = categoryFilters.includes(vibe) ? vibe : categoryFilters[0];
+  const [selected, setSelected] = useState<string>(initialFilter);
+
+  const products = categoryProducts[selected] ?? [];
+  const headerTitle = (filterLabels[selected] ?? selected).toUpperCase();
 
   return (
     <main className="min-h-screen bg-white">
@@ -32,7 +45,7 @@ export default function VibeProductsPage() {
 
       {/* Category filter chips */}
       <div className="flex gap-2 px-4 py-3 overflow-x-auto scrollbar-none">
-        {CATEGORY_FILTERS.map((f) => (
+        {categoryFilters.map((f) => (
           <button
             key={f}
             onClick={() => setSelected(f)}
@@ -42,7 +55,7 @@ export default function VibeProductsPage() {
                 : 'bg-gray-50 border-gray-200 text-gray-600'
             }`}
           >
-            {FILTER_LABELS[f]}
+            {filterLabels[f]}
           </button>
         ))}
       </div>
@@ -74,5 +87,13 @@ export default function VibeProductsPage() {
         ))}
       </div>
     </main>
+  );
+}
+
+export default function VibeProductsPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-white" />}>
+      <VibeProductsContent />
+    </Suspense>
   );
 }

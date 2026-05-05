@@ -22,6 +22,8 @@ export interface Reel {
   priceText: string;
 }
 
+// ── Fashion ─────────────────────────────────────────────────────────────────
+
 export const VIBES: Vibe[] = [
   {
     id: 'officewear-bags',
@@ -55,6 +57,43 @@ export const FILTER_LABELS: Record<string, string> = {
   'jewelry': 'Jewelry',
   'makeup': 'Makeup',
   'sneakers': 'Sneakers',
+};
+
+// ── Home Decor ───────────────────────────────────────────────────────────────
+
+export const HOME_DECOR_VIBES: Vibe[] = [
+  {
+    id: 'bedside-musts',
+    title: 'Bed-side musts',
+    description: 'Cosy bedside essentials your followers will love — lamps, organizers, and more',
+    img: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=200&h=200&fit=crop',
+  },
+  {
+    id: 'quirky-wall-decor',
+    title: 'Quirky wall-decor',
+    description: 'Statement wall pieces that make any room look 10x better — easy to style for a reel',
+    img: 'https://images.unsplash.com/photo-1484101403633-562f891dc89a?w=200&h=200&fit=crop',
+  },
+  {
+    id: 'affordable-home-decor',
+    title: 'Affordable home-decor',
+    description: 'Put together your budget home makeover collection & share it with your audience',
+    img: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=200&h=200&fit=crop',
+  },
+];
+
+export const HOME_DECOR_CATEGORY_FILTERS: string[] = [
+  'wall-decor',
+  'bed-side',
+  'floor-decor',
+  'artificial-plants',
+];
+
+export const HOME_DECOR_FILTER_LABELS: Record<string, string> = {
+  'wall-decor': 'Wall decor',
+  'bed-side': 'Bed-side',
+  'floor-decor': 'Floor-decor',
+  'artificial-plants': 'Artificial Plants',
 };
 
 export const CATEGORY_PRODUCTS: Record<string, CategoryProduct[]> = {
@@ -212,6 +251,239 @@ export const CATEGORY_PRODUCTS: Record<string, CategoryProduct[]> = {
   ],
 };
 
+export const HOME_DECOR_CATEGORY_PRODUCTS: Record<string, CategoryProduct[]> = {
+  'wall-decor': [
+    {
+      id: 'wd1',
+      name: 'Hanging Shelf with Plant Hook',
+      img: 'https://images.unsplash.com/photo-1510414842594-a61c69b5ae57?w=400&h=400&fit=crop',
+      price: '₹345',
+      commission: 10,
+      benefits: 'Wooden hanging shelf with rope, holds small plants and decor. Easy to install, no drilling required.',
+    },
+    {
+      id: 'wd2',
+      name: 'Woven Bamboo Wall Art',
+      img: 'https://images.unsplash.com/photo-1501127122-f385ca6ddd9d?w=400&h=400&fit=crop',
+      price: '₹280',
+      commission: 10,
+      benefits: 'Handwoven bamboo rounds, Boho aesthetic, set of 3 sizes. Huge trend on home decor reels.',
+    },
+    {
+      id: 'wd3',
+      name: 'Floating Wall Shelf Set',
+      img: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400&h=400&fit=crop',
+      price: '₹345',
+      commission: 10,
+      benefits: 'Set of 3 wooden floating shelves, holds books and plants. Easy before/after reel content.',
+    },
+    {
+      id: 'wd4',
+      name: 'Round Decorative Wall Art',
+      img: 'https://images.unsplash.com/photo-1582582494705-f8ce0f0b3f71?w=400&h=400&fit=crop',
+      price: '₹345',
+      commission: 10,
+      benefits: 'Intricate resin or MDF wall art, adds a cultural touch. Popular for pooja room and living room.',
+    },
+    {
+      id: 'wd5',
+      name: 'Macramé Wall Hanging',
+      img: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=400&fit=crop',
+      price: '₹299',
+      commission: 10,
+      benefits: 'Handmade cotton macramé, boho-chic design. Trending in aesthetic home decor reels.',
+    },
+    {
+      id: 'wd6',
+      name: 'Metal Geometric Wall Frame',
+      img: 'https://images.unsplash.com/photo-1604162977626-64d7b866fb96?w=400&h=400&fit=crop',
+      price: '₹399',
+      commission: 10,
+      benefits: 'Gold-finish geometric frame, can hold photos or stand alone. Minimal and elegant look.',
+    },
+  ],
+  'bed-side': [
+    {
+      id: 'bs1',
+      name: 'Wooden Bedside Organizer',
+      img: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=400&h=400&fit=crop',
+      price: '₹349',
+      commission: 10,
+      benefits: 'Holds phone, glasses, remotes. Solid wood, anti-slip base. Great gifting and unboxing content.',
+    },
+    {
+      id: 'bs2',
+      name: 'Soft Glow Bedside Lamp',
+      img: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop',
+      price: '₹450',
+      commission: 10,
+      benefits: 'Warm 3000K light, touch dimmer, USB port in base. Instantly makes any room look aesthetic.',
+    },
+    {
+      id: 'bs3',
+      name: 'Fluffy Throw Pillow Set',
+      img: 'https://images.unsplash.com/photo-1584100936595-c0654b55a2e2?w=400&h=400&fit=crop',
+      price: '₹299',
+      commission: 10,
+      benefits: 'Set of 2 faux fur cushions, 16 colors. Instantly upgrades bed or sofa. High visual impact on video.',
+    },
+    {
+      id: 'bs4',
+      name: 'Knit Throw Blanket',
+      img: 'https://images.unsplash.com/photo-1543248939-ff40856f65d4?w=400&h=400&fit=crop',
+      price: '₹380',
+      commission: 10,
+      benefits: 'Chunky knit acrylic, large 150x200cm size. Cosy aesthetic — perfect for winter room tour reels.',
+    },
+  ],
+  'floor-decor': [
+    {
+      id: 'fd1',
+      name: 'Tall Floor Vase',
+      img: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400&h=400&fit=crop',
+      price: '₹499',
+      commission: 10,
+      benefits: 'Minimalist ceramic tall vase, 60cm height. Looks luxe but budget-friendly. Strong visual anchor.',
+    },
+    {
+      id: 'fd2',
+      name: 'Wicker Plant Stand',
+      img: 'https://images.unsplash.com/photo-1466781783364-36c955e42a7f?w=400&h=400&fit=crop',
+      price: '₹349',
+      commission: 10,
+      benefits: '3-tier bamboo plant stand, holds 3 pots. Perfect for balcony garden and living room corner.',
+    },
+    {
+      id: 'fd3',
+      name: 'Jute Round Rug',
+      img: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=400&fit=crop',
+      price: '₹450',
+      commission: 10,
+      benefits: 'Natural jute, 3ft diameter. Instantly transforms bare floors. Trending boho aesthetic.',
+    },
+    {
+      id: 'fd4',
+      name: 'Decorative Storage Basket',
+      img: 'https://images.unsplash.com/photo-1595341888016-a392ef81b7de?w=400&h=400&fit=crop',
+      price: '₹299',
+      commission: 10,
+      benefits: 'Hand-woven seagrass basket, multipurpose storage. Organise + decorate at the same time.',
+    },
+  ],
+  'artificial-plants': [
+    {
+      id: 'ap1',
+      name: 'Artificial Monstera Plant',
+      img: 'https://images.unsplash.com/photo-1463936575829-25148e1db1b8?w=400&h=400&fit=crop',
+      price: '₹349',
+      commission: 10,
+      benefits: '90cm tall, realistic leaves, weighted pot. Zero maintenance. Great for room transformation reels.',
+    },
+    {
+      id: 'ap2',
+      name: 'Succulent Arrangement Set',
+      img: 'https://images.unsplash.com/photo-1459156212016-c812468e2115?w=400&h=400&fit=crop',
+      price: '₹249',
+      commission: 10,
+      benefits: 'Set of 6 mini succulents in ceramic pots. Shelf and windowsill decor. Budget-friendly haul content.',
+    },
+    {
+      id: 'ap3',
+      name: 'Hanging Ivy Basket',
+      img: 'https://images.unsplash.com/photo-1485955900006-10f4d324d411?w=400&h=400&fit=crop',
+      price: '₹299',
+      commission: 10,
+      benefits: 'Trailing artificial ivy in woven hanging pot. Balcony or bedroom corner essential.',
+    },
+    {
+      id: 'ap4',
+      name: 'Cactus Cluster Pot',
+      img: 'https://images.unsplash.com/photo-1459411552884-841db9b3cc2a?w=400&h=400&fit=crop',
+      price: '₹199',
+      commission: 10,
+      benefits: 'Multi-cactus arrangement in terracotta pot. Minimal and modern desk or shelf decor.',
+    },
+  ],
+};
+
+export const HOME_DECOR_YOUR_PRODUCTS: CategoryProduct[] = [
+  {
+    id: 'hdyp1',
+    name: 'Cleaning Spray Kit',
+    img: 'https://images.unsplash.com/photo-1563453392212-326f5e854473?w=400&h=400&fit=crop',
+    price: '₹149',
+    commission: 0.5,
+    benefits: 'Multi-surface cleaning spray, eco-friendly formula. Top seller in home cleaning category.',
+  },
+  {
+    id: 'hdyp2',
+    name: 'Brass Diya Set',
+    img: 'https://images.unsplash.com/photo-1605883705077-8d3d3cebe78c?w=400&h=400&fit=crop',
+    price: '₹199',
+    commission: 0.5,
+    benefits: 'Traditional brass diyas, set of 5. Perfect for pooja and festival decor content.',
+  },
+  {
+    id: 'hdyp3',
+    name: 'Storage Box Set',
+    img: 'https://images.unsplash.com/photo-1595341888016-a392ef81b7de?w=400&h=400&fit=crop',
+    price: '₹249',
+    commission: 0.5,
+    benefits: 'Set of 3 stackable storage boxes. Great before/after organisation content.',
+  },
+  {
+    id: 'hdyp4',
+    name: 'Incense Holder Stand',
+    img: 'https://images.unsplash.com/photo-1602523961358-f9f03dd557db?w=400&h=400&fit=crop',
+    price: '₹99',
+    commission: 0.5,
+    benefits: 'Wooden incense stick holder with ash catcher. Pooja room essential.',
+  },
+  {
+    id: 'hdyp5',
+    name: 'Wall Cleaning Brush Set',
+    img: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&h=400&fit=crop',
+    price: '₹179',
+    commission: 0.5,
+    benefits: 'Long handle brush set for tiles, corners, and hard-to-reach areas.',
+  },
+  {
+    id: 'hdyp6',
+    name: 'Hanging Planter Set',
+    img: 'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=400&h=400&fit=crop',
+    price: '₹199',
+    commission: 0.5,
+    benefits: 'Macramé hanging planters, set of 2. Trending balcony and window decor.',
+  },
+];
+
+// ── Niche-aware accessors ────────────────────────────────────────────────────
+
+export function getVibesForNiche(niche: string): Vibe[] {
+  if (niche === 'home') return HOME_DECOR_VIBES;
+  return VIBES;
+}
+
+export function getCategoryFiltersForNiche(niche: string): string[] {
+  if (niche === 'home') return HOME_DECOR_CATEGORY_FILTERS;
+  return CATEGORY_FILTERS;
+}
+
+export function getFilterLabelsForNiche(niche: string): Record<string, string> {
+  if (niche === 'home') return HOME_DECOR_FILTER_LABELS;
+  return FILTER_LABELS;
+}
+
+export function getCategoryProductsForNiche(niche: string): Record<string, CategoryProduct[]> {
+  if (niche === 'home') return HOME_DECOR_CATEGORY_PRODUCTS;
+  return CATEGORY_PRODUCTS;
+}
+
+export function getYourProductsForNiche(niche: string): CategoryProduct[] {
+  if (niche === 'home') return HOME_DECOR_YOUR_PRODUCTS;
+  return YOUR_PRODUCTS;
+}
+
 export const YOUR_PRODUCTS: CategoryProduct[] = [
   {
     id: 'yp1',
@@ -292,5 +564,12 @@ export function getProductById(id: string): CategoryProduct | undefined {
     const found = products.find((p) => p.id === id);
     if (found) return found;
   }
-  return YOUR_PRODUCTS.find((p) => p.id === id);
+  for (const products of Object.values(HOME_DECOR_CATEGORY_PRODUCTS)) {
+    const found = products.find((p) => p.id === id);
+    if (found) return found;
+  }
+  return (
+    YOUR_PRODUCTS.find((p) => p.id === id) ??
+    HOME_DECOR_YOUR_PRODUCTS.find((p) => p.id === id)
+  );
 }
