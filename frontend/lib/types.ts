@@ -60,23 +60,10 @@ export type PriceRange = 'budget' | 'mid' | 'premium';
 export type AgeGroup = '13-17' | '18-24' | '25-34';
 
 export interface BuyerInsights {
-  top_categories: Array<{ name: string; pct: number; emoji: string; is_top?: boolean }>;
-  price_behaviour: {
-    sweet_spot: string;
-    highest_order: string;
-    discount_pull: 'HIGH' | 'MEDIUM' | 'LOW';
-    tip: string;
-  };
-  content_engagement: {
-    language: string;
-    narration: string;
-    video_style: string;
-    music: string;
-  };
-  peak_hours: number[];
-  peak_hour: number;
-  peak_tip: string;
-  gender: { female: number; male: number };
+  language: string;
+  narration_style: string;
+  video_style: string;
+  gender: { female: number; male: number; coverage_pct: number };
   age_groups: Array<{ label: string; value: number }>;
   primary_buyer_tip: string;
   tier_distribution: { metro: number; tier2: number; tier3: number };
