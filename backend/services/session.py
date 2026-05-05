@@ -1,8 +1,11 @@
+import os
 from typing import Dict, Optional, Any
-from uuid import uuid4
 
-# In-memory session store: session_id → creator dict
-_store: Dict[str, Dict[str, Any]] = {}
+import jwt
+
+JWT_SECRET = os.getenv("JWT_SECRET", "style-bazaar-dev-secret-change-in-prod")
+JWT_ALGORITHM = "HS256"
+JWT_EXPIRY_SECONDS = 86400  # 24 hours
 
 MOCK_CREATOR = {
     "id": "mock_001",
@@ -17,19 +20,24 @@ MOCK_CREATOR = {
 
 
 def create_session(creator: Dict[str, Any]) -> str:
-    session_id = str(uuid4())
-    _store[session_id] = creator
-    return session_id
+    """Encode creator data into a signed JWT token."""
+    import time
+    payload = {**creator, "exp": int(time.time()) + JWT_EXPIRY_SECONDS}
+    return jwt.encode(payload, JWT_SECRET, algorithm=JWT_ALGORITHM)
 
 
-def get_session(session_id: str) -> Optional[Dict[str, Any]]:
-    return _store.get(session_id)
+def get_session(token: str) -> Optional[Dict[str, Any]]:
+    """Decode and verify a JWT token, returning creator data or None."""
+    try:
+        payload = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
+        payload.pop("exp", None)
+        return payload
+    except jwt.PyJWTError:
+        return None
 
 
-def update_session(session_id: str, data: Dict[str, Any]) -> None:
-    if session_id in _store:
-        _store[session_id].update(data)
-
-
-def delete_session(session_id: str) -> None:
-    _store.pop(session_id, None)
+def update_session(token: str, data: Dict[str, Any]) -> str:
+    """Decode token, merge new data, and return a fresh JWT."""
+    creator = get_session(token) or {}
+    creator.update(data)
+    return create_session(creator)

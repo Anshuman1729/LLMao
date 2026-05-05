@@ -24,9 +24,9 @@ def _sync_tts(text: str) -> bytes:
         return _silent_wav()
 
     try:
+        import tempfile
         from sarvamai import SarvamAI
         from sarvamai.play import save
-        import io
 
         client = SarvamAI(api_subscription_key=SARVAM_API_KEY)
         audio = client.text_to_speech.convert(
@@ -35,11 +35,14 @@ def _sync_tts(text: str) -> bytes:
             model="bulbul:v3",
             speaker="ritu",
         )
-        # sarvamai.play.save writes to a file path; capture bytes via BytesIO workaround
-        buf = io.BytesIO()
-        save(audio, buf)
-        buf.seek(0)
-        return buf.read()
+        # save() requires a file path string — use a temp file then read bytes
+        with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as tmp:
+            tmp_path = tmp.name
+        save(audio, tmp_path)
+        with open(tmp_path, "rb") as f:
+            data = f.read()
+        os.unlink(tmp_path)
+        return data
     except Exception:
         return _silent_wav()
 
