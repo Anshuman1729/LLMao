@@ -1,46 +1,40 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { GhostMascot } from '@/components/Onboarding/GhostMascot';
 import { ProgressBar } from '@/components/Onboarding/ProgressBar';
 import { CategoryPicker } from '@/components/Onboarding/CategoryPicker';
 import { CreatorTypePicker } from '@/components/Onboarding/CreatorTypePicker';
 import { MicButton } from '@/components/Onboarding/MicButton';
-import { useAudioPlayer } from '@/components/VoiceBot/useAudioPlayer';
 import { saveOnboardingProfile } from '@/lib/api';
 import { CATEGORIES } from '@/components/Onboarding/CategoryPicker';
 
-type Step = 'greeting_1' | 'greeting_2' | 'category' | 'creator_type' | 'user_info';
+type Step = 'category' | 'creator_type' | 'user_info';
 
 const STEP_TEXT: Record<Step, string> = {
-  greeting_1: "I'll help you through your journey..",
-  greeting_2: "Let's set-up your profile first",
   category: 'Which category do you create content on?',
   creator_type: 'Who do you look up to as a creator?',
   user_info: 'Almost there! Tell us a little about yourself.',
 };
 
-const STEP_TITLES: Partial<Record<Step, string>> = {
+const STEP_TITLES: Record<Step, string> = {
   category: 'Choose your category',
   creator_type: 'Your inspiration',
   user_info: 'Your profile',
 };
 
-const STEP_SUBTITLES: Partial<Record<Step, string>> = {
+const STEP_SUBTITLES: Record<Step, string> = {
   category: 'Which category do you create content on?',
   creator_type: 'Pick the creator whose style you aspire to.',
   user_info: 'This is how you\'ll appear on your dashboard.',
 };
 
-const PICKER_STEPS: Step[] = ['category', 'creator_type', 'user_info'];
-
-const FLOW: Step[] = ['greeting_1', 'greeting_2', 'category', 'creator_type', 'user_info'];
+const FLOW: Step[] = ['category', 'creator_type', 'user_info'];
 
 export default function OnboardingPage() {
   const router = useRouter();
-  const [step, setStep] = useState<Step>('greeting_1');
-  const [tapped, setTapped] = useState(false);
+  const [step, setStep] = useState<Step>('category');
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedCreatorTypes, setSelectedCreatorTypes] = useState<string[]>([]);
 
@@ -50,9 +44,7 @@ export default function OnboardingPage() {
   const [userFollowers, setUserFollowers] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
-  const progressIndex = PICKER_STEPS.indexOf(step);
-  const isGreeting = step === 'greeting_1' || step === 'greeting_2';
-  const isPicker = PICKER_STEPS.includes(step);
+  const progressIndex = FLOW.indexOf(step);
 
   const advance = useCallback(() => {
     setStep((current) => {
@@ -60,18 +52,6 @@ export default function OnboardingPage() {
       return (FLOW[idx + 1] as Step) ?? current;
     });
   }, []);
-
-  const onAudioEnded = useCallback(() => {
-    // Audio playback finished — user must tap to continue
-  }, []);
-
-  const { play } = useAudioPlayer(onAudioEnded);
-
-  // Play TTS whenever step changes (after user taps to begin)
-  useEffect(() => {
-    if (!tapped) return;
-    play(STEP_TEXT[step]);
-  }, [step, tapped]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Voice input: match spoken word to a category
   const handleVoiceCategory = useCallback((transcript: string) => {
@@ -99,37 +79,6 @@ export default function OnboardingPage() {
       router.push('/for-you');
     }
   }, [userName, userHandle, userFollowers, selectedCategory, selectedCreatorTypes, router]);
-
-  // ── Greeting screens ──────────────────────────────────────────
-  if (isGreeting) {
-    return (
-      <main
-        className="min-h-screen bg-gray-50 flex flex-col items-center justify-center px-6 cursor-pointer select-none"
-        onClick={() => {
-          if (!tapped) {
-            setTapped(true);
-            play(STEP_TEXT[step]);
-          } else {
-            advance();
-          }
-        }}
-      >
-        <GhostMascot size="lg" />
-
-        {/* Speech bubble */}
-        <div className="mt-6 bg-white rounded-2xl rounded-tl-none px-6 py-4 shadow-md border border-gray-100 max-w-xs text-center">
-          <p className="text-gray-700 text-sm font-medium leading-relaxed">{STEP_TEXT[step]}</p>
-        </div>
-
-        {!tapped && (
-          <p className="mt-8 text-xs text-gray-400">Tap anywhere to begin</p>
-        )}
-        {tapped && (
-          <p className="mt-8 text-xs text-gray-400">Tap to continue</p>
-        )}
-      </main>
-    );
-  }
 
   // ── Picker screens ────────────────────────────────────────────
   return (
@@ -225,8 +174,7 @@ export default function OnboardingPage() {
       </div>
 
       {/* Bottom action bar */}
-      {isPicker && (
-        <div className="fixed bottom-0 left-0 right-0 flex justify-center pb-8 pt-4 bg-gradient-to-t from-gray-50 via-gray-50 to-transparent">
+      <div className="fixed bottom-0 left-0 right-0 flex justify-center pb-8 pt-4 bg-gradient-to-t from-gray-50 via-gray-50 to-transparent">
           {step === 'category' && (
             <MicButton onResult={handleVoiceCategory} />
           )}
@@ -248,7 +196,6 @@ export default function OnboardingPage() {
             </button>
           )}
         </div>
-      )}
     </main>
   );
 }
