@@ -55,7 +55,6 @@ export default function OnboardingPage() {
 
               <VoiceBotWidget
                 niche={creator?.niche ?? 'fashion'}
-                creatorName={creator?.name ?? 'there'}
                 mode="onboarding"
               />
             </div>

@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { VoiceBotAvatar } from './VoiceBotAvatar';
 import { VoiceBotBubble } from './VoiceBotBubble';
 import { useAudioPlayer } from './useAudioPlayer';
-import { ONBOARDING_SCRIPT, getStepScript, getNextStep } from '@/lib/onboarding-script';
+import { getStepScript, getNextStep } from '@/lib/onboarding-script';
 import { getRecommendedProducts } from '@/lib/api';
 import { BotStep, OnboardingAnswers, Product, AgeGroup, PriceRange } from '@/lib/types';
 
@@ -88,13 +88,11 @@ function reducer(state: BotState, action: Action): BotState {
 
 interface VoiceBotWidgetProps {
   niche?: string;
-  creatorName?: string;
   mode?: 'greeting' | 'onboarding';
 }
 
 export function VoiceBotWidget({
   niche = 'fashion',
-  creatorName = 'there',
   mode = 'onboarding',
 }: VoiceBotWidgetProps) {
   const router = useRouter();
