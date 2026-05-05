@@ -60,21 +60,30 @@ export type PriceRange = 'budget' | 'mid' | 'premium';
 export type AgeGroup = '13-17' | '18-24' | '25-34';
 
 export interface BuyerInsights {
-  language: string;
-  narration_style: string;
-  video_style: string;
-  gender: { female: number; male: number; coverage_pct: number };
+  top_categories: Array<{ name: string; pct: number; emoji: string; is_top?: boolean }>;
+  price_behaviour: {
+    sweet_spot: string;
+    highest_order: string;
+    discount_pull: 'HIGH' | 'MEDIUM' | 'LOW';
+    tip: string;
+  };
+  content_engagement: {
+    language: string;
+    narration: string;
+    video_style: string;
+    music: string;
+  };
+  peak_hours: number[];
+  peak_hour: number;
+  peak_tip: string;
+  gender: { female: number; male: number };
   age_groups: Array<{ label: string; value: number }>;
-  posting_times: Array<{ slot: string; pct: number }>;
-  product_catalogs: Array<{ name: string; pct: number; description?: string }>;
-  price_distribution: Array<{ range: string; pct: number }>;
-  brand_tier: string;
-  top_content_themes: string[];
-  top_product_categories: string[];
-  demographics_confidence: 'low' | 'medium' | 'high';
-  content_confidence: 'low' | 'medium' | 'high';
-  product_confidence: 'low' | 'medium' | 'high';
-  demographics_note?: string;
+  primary_buyer_tip: string;
+  tier_distribution: { metro: number; tier2: number; tier3: number };
+  top_cities: string[];
+  city_count: number;
+  tier_tip: string;
+  order_frequency: { repeat: number; first_time: number };
 }
 
 export interface OnboardingAnswers {

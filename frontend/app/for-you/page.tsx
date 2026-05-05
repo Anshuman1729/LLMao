@@ -242,6 +242,7 @@ export default function ForYouPage() {
           insights={insights}
           open={showInsights}
           onClose={() => setShowInsights(false)}
+          niche={creator?.niche}
         />
       )}
     </main>
