@@ -26,41 +26,39 @@ export const MOCK_AUDIENCE: AudienceProfile = {
 };
 
 export const MOCK_BUYER_INSIGHTS: BuyerInsights = {
-  language: 'Mostly English',
-  narration_style: 'Voiceover',
-  video_style: 'Product Demo',
-  gender: { female: 66.7, male: 33.3, coverage_pct: 10.7 },
+  top_categories: [
+    { name: 'Fashion', pct: 85, emoji: '👗', is_top: true },
+    { name: 'Home Decor', pct: 10, emoji: '🛋️' },
+    { name: 'Baby Products', pct: 5, emoji: '👶' },
+  ],
+  price_behaviour: {
+    sweet_spot: '₹199–399',
+    highest_order: '₹799',
+    discount_pull: 'HIGH',
+    tip: 'Mentioning price drop or under ₹300 in hook increases CTR by ~2x',
+  },
+  content_engagement: {
+    language: 'Hinglish',
+    narration: 'Voice-over',
+    video_style: 'Unboxing',
+    music: 'Soothing',
+  },
+  peak_hours: [2,2,1,1,2,4,8,14,18,22,26,30,34,32,28,30,36,44,68,56,48,38,28,16],
+  peak_hour: 18,
+  peak_tip: 'Post at 7 PM for best reach',
+  gender: { female: 78, male: 22 },
   age_groups: [
-    { label: '<20', value: 33.3 },
-    { label: '20–30', value: 0 },
-    { label: '30–40', value: 0 },
-    { label: '40–60', value: 33.3 },
-    { label: '>60', value: 33.3 },
+    { label: '16–20', value: 12 },
+    { label: '21–30 Yrs', value: 55 },
+    { label: '31–40', value: 24 },
+    { label: '41+', value: 9 },
   ],
-  posting_times: [
-    { slot: '<8AM', pct: 0 },
-    { slot: '8–12', pct: 66.7 },
-    { slot: '12–4PM', pct: 0 },
-    { slot: '4–8PM', pct: 0 },
-    { slot: '>8PM', pct: 33.3 },
-  ],
-  product_catalogs: [
-    { name: 'Festive Rayon Kurta Sets', pct: 33.3, description: 'Festive ethnic wear in vibrant rayon fabric' },
-    { name: 'Elegant Velvet Gowns', pct: 33.3, description: 'Premium velvet gowns for special occasions' },
-    { name: 'Embroidered Rayon Kurtis', pct: 33.3, description: 'Everyday kurtis with embroidered detailing' },
-  ],
-  price_distribution: [
-    { range: '₹100–300', pct: 33.3 },
-    { range: '₹300–500', pct: 33.3 },
-    { range: '₹500–1000', pct: 33.3 },
-  ],
-  brand_tier: 'Mixed',
-  top_content_themes: ['Ethnic Wear', 'Festive Fashion', 'Comfortable Clothing'],
-  top_product_categories: ['Women Kurtis & Kurtas', 'Women Kurtis', 'Kurta Sets & Suits'],
-  demographics_confidence: 'low',
-  content_confidence: 'medium',
-  product_confidence: 'medium',
-  demographics_note: 'Low sample size — age & gender data may not be representative.',
+  primary_buyer_tip: 'Your primary buyer is young women aged 21–30',
+  tier_distribution: { metro: 12, tier2: 58, tier3: 30 },
+  top_cities: ['Pune', 'Jaipur', 'Indore', 'Lucknow', 'Patna', 'Mumbai'],
+  city_count: 50,
+  tier_tip: 'Tier 2 dominates. Use Hinglish, show affordable options, mention free delivery.',
+  order_frequency: { repeat: 34, first_time: 66 },
 };
 
 export const MOCK_PRODUCTS: Product[] = [
