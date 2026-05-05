@@ -44,21 +44,22 @@ const BUYING_ACTIVITY = [
 const PEAK_HOURS = new Set([8, 9, 10, 11, 12, 18, 19, 20]);
 const HOUR_LABELS: Record<number, string> = { 0: '12A', 6: '6A', 12: '12P', 18: '6P', 23: '11P' };
 
+const CHART_HEIGHT_PX = 80;
+
 function BuyingActivityChart() {
   const max = Math.max(...BUYING_ACTIVITY);
   return (
     <div className="mt-4">
-      <div className="flex items-end gap-[3px] h-20 w-full">
+      <div className="flex items-end gap-[3px]" style={{ height: `${CHART_HEIGHT_PX}px` }}>
         {BUYING_ACTIVITY.map((v, i) => {
-          const heightPct = Math.max(3, Math.round((v / max) * 100));
+          const heightPx = Math.max(3, Math.round((v / max) * CHART_HEIGHT_PX));
           const isPeak = PEAK_HOURS.has(i);
           return (
-            <div key={i} className="flex-1 flex flex-col justify-end">
-              <div
-                className={`w-full rounded-sm ${isPeak ? 'bg-[#FF2D7B]' : 'bg-gray-200'}`}
-                style={{ height: `${heightPct}%` }}
-              />
-            </div>
+            <div
+              key={i}
+              className={`flex-1 rounded-sm ${isPeak ? 'bg-[#FF2D7B]' : 'bg-gray-200'}`}
+              style={{ height: `${heightPx}px` }}
+            />
           );
         })}
       </div>
