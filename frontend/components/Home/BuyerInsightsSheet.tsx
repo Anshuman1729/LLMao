@@ -29,39 +29,6 @@ function TipBox({ text }: { text: string }) {
   );
 }
 
-function PeakHoursChart({ hours, peakHour }: { hours: number[]; peakHour: number }) {
-  const max = Math.max(...hours);
-  const labels: Record<number, string> = { 0: '12A', 6: '6A', 12: '12P', 18: '6P', 23: '11P' };
-
-  return (
-    <div className="mt-3">
-      <div className="flex items-end gap-[3px] h-20 w-full">
-        {hours.map((v, i) => {
-          const heightPct = Math.max(4, Math.round((v / max) * 100));
-          const isPeak = i === peakHour;
-          return (
-            <div key={i} className="flex-1 flex flex-col items-center justify-end relative">
-              {isPeak && (
-                <div className="absolute -top-6 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-[9px] font-bold px-1.5 py-0.5 rounded whitespace-nowrap">
-                  {peakHour === 0 ? '12A' : peakHour < 12 ? `${peakHour}AM` : peakHour === 12 ? '12P' : `${peakHour - 12}PM`}
-                </div>
-              )}
-              <div
-                className={`w-full rounded-sm transition-all ${isPeak ? 'bg-[#FF2D7B]' : 'bg-gray-200'}`}
-                style={{ height: `${heightPct}%` }}
-              />
-            </div>
-          );
-        })}
-      </div>
-      <div className="flex justify-between mt-1">
-        {Object.entries(labels).map(([i, label]) => (
-          <span key={i} className="text-[9px] text-gray-400">{label}</span>
-        ))}
-      </div>
-    </div>
-  );
-}
 
 function PostingWindowChart() {
   const slots = [
@@ -104,26 +71,6 @@ function GenderBar({ female, male }: { female: number; male: number }) {
   );
 }
 
-function AgeBarChart({ groups }: { groups: Array<{ label: string; value: number }> }) {
-  const max = Math.max(...groups.map((g) => g.value));
-  return (
-    <div className="flex items-end gap-3 h-16 mt-3">
-      {groups.map((g) => {
-        const heightPct = Math.max(8, Math.round((g.value / max) * 100));
-        const isPrimary = g.value === max;
-        return (
-          <div key={g.label} className="flex-1 flex flex-col items-center gap-1">
-            <div
-              className={`w-full rounded-t-md ${isPrimary ? 'bg-[#FF2D7B]' : 'bg-pink-100'}`}
-              style={{ height: `${heightPct}%` }}
-            />
-            <span className="text-[9px] text-gray-500 text-center leading-tight">{g.label}</span>
-          </div>
-        );
-      })}
-    </div>
-  );
-}
 
 function OrderFrequencyDonut({ repeat, firstTime }: { repeat: number; firstTime: number }) {
   const r = 36;
