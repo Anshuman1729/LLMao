@@ -70,18 +70,8 @@ function ChevronRightIcon() {
 
 function MascotIcon() {
   return (
-    <div className="w-8 h-8 relative">
-      {/* Simple ghost mascot shape */}
-      <div className="w-8 h-8 bg-pink-400 rounded-t-full relative overflow-hidden">
-        <div className="absolute bottom-0 left-0 right-0 flex">
-          <div className="flex-1 h-2 bg-[#1E1E35] rounded-full" />
-          <div className="flex-1 h-2 bg-pink-400" />
-          <div className="flex-1 h-2 bg-[#1E1E35] rounded-full" />
-        </div>
-        <div className="absolute top-2 left-1.5 w-1.5 h-1.5 bg-white rounded-full" />
-        <div className="absolute top-2 right-1.5 w-1.5 h-1.5 bg-white rounded-full" />
-      </div>
-    </div>
+    // eslint-disable-next-line @next/next/no-img-element
+    <img src="https://i.postimg.cc/XY4nFJPX/image-3.png" alt="mascot" className="w-8 h-8 object-contain" />
   );
 }
 

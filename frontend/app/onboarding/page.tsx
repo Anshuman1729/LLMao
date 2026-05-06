@@ -2,7 +2,6 @@
 
 import { useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import { GhostMascot } from '@/components/Onboarding/GhostMascot';
 import { ProgressBar } from '@/components/Onboarding/ProgressBar';
 import { CategoryPicker } from '@/components/Onboarding/CategoryPicker';
 import { CreatorTypePicker } from '@/components/Onboarding/CreatorTypePicker';
@@ -99,7 +98,8 @@ export default function OnboardingPage() {
 
       {/* Ghost + speech bubble */}
       <div className="flex flex-col items-center pt-4 pb-2">
-        <GhostMascot size="md" />
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="https://i.postimg.cc/XY4nFJPX/image-3.png" alt="mascot" className="w-16 h-16 object-contain" />
         <div className="mt-3 bg-white rounded-xl rounded-tl-none px-4 py-2.5 shadow-sm border border-gray-100 max-w-xs">
           <p className="text-gray-600 text-xs leading-relaxed">{STEP_TEXT[step]}</p>
         </div>
