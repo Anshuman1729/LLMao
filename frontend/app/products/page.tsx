@@ -24,6 +24,20 @@ function SectionDivider({ label }: { label: string }) {
   );
 }
 
+function MetricBar({ label, value, total = 5 }: { label: string; value: number; total?: number }) {
+  return (
+    <div className="flex items-center gap-1.5">
+      <span className="text-[9px] text-gray-400 w-24 flex-shrink-0">{label}</span>
+      <div className="flex gap-0.5">
+        {Array.from({ length: total }, (_, i) => (
+          <div key={i} className={`w-2.5 h-1.5 rounded-full ${i < value ? 'bg-[#FF2D7B]' : 'bg-gray-200'}`} />
+        ))}
+      </div>
+      <span className="text-[9px] text-gray-400">{value}/{total}</span>
+    </div>
+  );
+}
+
 const TABS: Array<{ id: Tab; icon: string; label: string }> = [
   { id: 'orders', icon: '⊙', label: 'Orders' },
   { id: 'wishlist', icon: '♡', label: 'Wishlist' },
@@ -100,7 +114,15 @@ export default function ProductsPage() {
                   />
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-bold text-gray-900 mb-0.5">{vibe.title}</p>
-                    <p className="text-xs text-gray-500 leading-snug line-clamp-2">{vibe.description}</p>
+                    <p className="text-xs text-gray-500 leading-snug line-clamp-2 mb-1.5">{vibe.description}</p>
+                    {vibe.demand !== undefined && (
+                      <div className="flex flex-col gap-0.5">
+                        <MetricBar label="Demand" value={vibe.demand} />
+                        {vibe.contentAvailable !== undefined && (
+                          <MetricBar label="Content available" value={vibe.contentAvailable} />
+                        )}
+                      </div>
+                    )}
                   </div>
                   <span className="text-gray-300 text-lg flex-shrink-0">›</span>
                 </button>
