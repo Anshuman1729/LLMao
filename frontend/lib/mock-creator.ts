@@ -70,7 +70,7 @@ export const MOCK_PRODUCTS: Product[] = [
     price_range: '₹399–₹799',
     commission_pct: 15,
     niche_tags: ['fashion', 'lifestyle'],
-    image_url: 'https://images.unsplash.com/photo-1583391733956-6c78276477e2?w=400&h=400&fit=crop',
+    image_url: 'https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=400&h=400&fit=crop',
     match_score: 96,
     description: 'Trending ethnic wear loved by fashion creators',
   },

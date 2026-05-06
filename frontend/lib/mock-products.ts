@@ -496,7 +496,7 @@ export const YOUR_PRODUCTS: CategoryProduct[] = [
   {
     id: 'yp1',
     name: 'Floral Anarkali Kurta',
-    img: 'https://images.unsplash.com/photo-1583391733956-6c78276477e2?w=400&h=400&fit=crop',
+    img: 'https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=400&h=400&fit=crop',
     price: '₹300',
     commission: 0.5,
     benefits: 'Trending ethnic wear loved by fashion creators. Easy to style for content.',

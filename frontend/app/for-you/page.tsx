@@ -11,7 +11,7 @@ import { BottomNav } from '@/components/Home/BottomNav';
 const MOCK_POSTS = [
   {
     id: 1,
-    img: 'https://images.unsplash.com/photo-1583391733956-6c78276477e2?w=200&h=250&fit=crop',
+    img: 'https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=200&h=250&fit=crop',
     dmSent: 5,
     clicks: 2,
   },
@@ -39,7 +39,7 @@ const CONTENT_IDEAS = [
     orders: '8K',
   },
   {
-    img: 'https://images.unsplash.com/photo-1583391733956-6c78276477e2?w=300&h=400&fit=crop',
+    img: 'https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?w=300&h=400&fit=crop',
     orders: '5K',
   },
 ];
