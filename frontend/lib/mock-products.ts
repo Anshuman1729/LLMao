@@ -75,18 +75,24 @@ export const HOME_DECOR_VIBES: Vibe[] = [
     title: 'Bed-side musts',
     description: 'Cosy bedside essentials your followers will love — lamps, organizers, and more',
     img: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=200&h=200&fit=crop',
+    demand: 3,
+    contentAvailable: 4,
   },
   {
     id: 'quirky-wall-decor',
     title: 'Quirky wall-decor',
     description: 'Statement wall pieces that make any room look 10x better — easy to style for a reel',
     img: 'https://images.unsplash.com/photo-1484101403633-562f891dc89a?w=200&h=200&fit=crop',
+    demand: 5,
+    contentAvailable: 3,
   },
   {
     id: 'affordable-home-decor',
     title: 'Affordable home-decor',
     description: 'Put together your budget home makeover collection & share it with your audience',
     img: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=200&h=200&fit=crop',
+    demand: 4,
+    contentAvailable: 4,
   },
 ];
 
