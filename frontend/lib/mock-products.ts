@@ -47,7 +47,7 @@ export const VIBES: Vibe[] = [
     id: 'makeup',
     title: 'Festive Dupattas',
     description: 'Put together a festive dupatta collection & share it with your audience',
-    img: 'https://images.unsplash.com/photo-1583952220882-ff3d37fc7b23?w=200&h=200&fit=crop',
+    img: 'https://i.postimg.cc/T30fcx8G/images.jpg',
     demand: 4,
     contentAvailable: 4,
   },

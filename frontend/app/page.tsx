@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import { GhostMascot } from '@/components/Onboarding/GhostMascot';
 
 export default function Home() {
   return (
@@ -21,17 +20,27 @@ export default function Home() {
         </p>
       </div>
 
-      {/* Ghost mascot — large, centered */}
+      {/* Bestie mascot — large, centered */}
       <div className="flex items-center justify-center my-4">
-        <GhostMascot size="xl" />
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="https://i.postimg.cc/htcKxjYt/image.png"
+          alt="Your bestie"
+          className="w-48 h-48 object-contain"
+        />
       </div>
 
       {/* Meet your bestie card */}
       <div className="mx-6 w-full max-w-sm">
         <Link href="/onboarding">
           <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-5 flex items-center gap-4 hover:shadow-xl transition-shadow duration-200 cursor-pointer">
-            <div className="w-12 h-12 rounded-2xl bg-pink-50 flex items-center justify-center flex-shrink-0">
-              <GhostMascot size="sm" />
+            <div className="w-12 h-12 rounded-2xl bg-pink-50 flex items-center justify-center flex-shrink-0 overflow-hidden">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="https://i.postimg.cc/htcKxjYt/image.png"
+                alt="Your bestie"
+                className="w-full h-full object-contain"
+              />
             </div>
             <div className="text-left">
               <p className="font-bold text-gray-900 text-sm">Meet your bestie</p>
