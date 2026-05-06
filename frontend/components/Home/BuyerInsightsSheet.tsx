@@ -168,10 +168,7 @@ export function BuyerInsightsSheet({ insights, open, onClose, niche = 'fashion' 
         </div>
 
         <div className="px-5 pb-10">
-          {/* ── PATTERN ── */}
-          <SectionDivider label="Pattern" />
-
-          <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-3">3 Top Categories</p>
+          <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-3 pt-4">3 Top Categories</p>
           <div className="flex gap-3">
             {insights.top_categories.map((cat, i) => (
               <div key={i} className="flex-1 bg-gray-50 rounded-2xl p-3 flex flex-col items-center gap-1 relative">
@@ -249,7 +246,6 @@ export function BuyerInsightsSheet({ insights, open, onClose, niche = 'fashion' 
 
           <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Gender</p>
           <GenderBar female={insights.gender.female} male={insights.gender.male} />
-          <TipBox text={insights.primary_buyer_tip} />
 
           {/* ── WHERE THEY BUY FROM ── */}
           <SectionDivider label="Where they buy from" />
