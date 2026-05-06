@@ -75,18 +75,9 @@ export default function ProductsPage() {
             </h1>
             <p className="text-white/50 text-xs">Exclusive unlimited returns!</p>
           </div>
-          <div className="flex flex-col items-center gap-1 mb-2 opacity-90">
-            {niche === 'home' ? (
-              <>
-                <span className="text-4xl">🏠</span>
-                <span className="text-2xl">🪴</span>
-              </>
-            ) : (
-              <>
-                <span className="text-4xl">🛋️</span>
-                <span className="text-2xl">🪔</span>
-              </>
-            )}
+          <div className="flex items-center mb-2">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="https://i.postimg.cc/FzFHvKQr/image-5.png" alt="" className="w-16 h-16 object-contain" />
           </div>
         </div>
       </div>
