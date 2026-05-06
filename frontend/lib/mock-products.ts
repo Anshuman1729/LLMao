@@ -12,6 +12,8 @@ export interface Vibe {
   title: string;
   description: string;
   img: string;
+  demand?: number;
+  contentAvailable?: number;
 }
 
 export interface Reel {
@@ -30,18 +32,24 @@ export const VIBES: Vibe[] = [
     title: 'Officewear bags',
     description: 'Make a collection of go-to office bags and share the link with your corporate girlies',
     img: 'https://images.unsplash.com/photo-1547949003-9792a18a2601?w=200&h=200&fit=crop',
+    demand: 4,
+    contentAvailable: 3,
   },
   {
     id: 'wedding-collection',
-    title: 'Wedding collection',
-    description: 'Make a collection of go-to office bags and share the link with your corporate girlies',
-    img: 'https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=200&h=200&fit=crop',
+    title: 'Oxidised Jewellery',
+    description: 'Curate a stunning oxidised jewellery collection your audience will love to wear and gift',
+    img: 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=200&h=200&fit=crop',
+    demand: 5,
+    contentAvailable: 3,
   },
   {
     id: 'makeup',
-    title: 'Makeup',
-    description: 'Put together your 5-min makeup kit & share it with your audience',
-    img: 'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=200&h=200&fit=crop',
+    title: 'Festive Dupattas',
+    description: 'Put together a festive dupatta collection & share it with your audience',
+    img: 'https://images.unsplash.com/photo-1583952220882-ff3d37fc7b23?w=200&h=200&fit=crop',
+    demand: 4,
+    contentAvailable: 4,
   },
 ];
 
