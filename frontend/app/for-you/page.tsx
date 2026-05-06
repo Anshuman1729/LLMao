@@ -162,11 +162,11 @@ export default function ForYouPage() {
           </div>
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-1">
-              <p className="text-white font-semibold text-sm">Understand your buyers</p>
+              <p className="text-white font-semibold text-sm">Growth Studio</p>
               <span className="bg-[#FF2D7B] text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full flex-shrink-0">NEW</span>
             </div>
             <p className="text-gray-400 text-xs leading-snug">
-              On the basis of yours &amp; relatable instagram profiles
+              Know your Existing and Future Buyers
             </p>
           </div>
           <ChevronRightIcon />
