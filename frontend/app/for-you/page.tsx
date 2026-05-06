@@ -187,8 +187,9 @@ export default function ForYouPage() {
           className="bg-[#1E1E35] rounded-2xl p-4 flex items-center gap-4 cursor-pointer active:scale-[0.98] transition-transform"
           onClick={() => router.push('/products')}
         >
-          <div className="w-12 h-12 bg-pink-500/20 rounded-xl flex items-center justify-center flex-shrink-0">
-            <MascotIcon />
+          <div className="w-12 h-12 bg-pink-500/20 rounded-xl flex items-center justify-center flex-shrink-0 overflow-hidden">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="https://i.postimg.cc/FzFHvKQr/image-5.png" alt="products" className="w-full h-full object-contain" />
           </div>
           <div className="flex-1 min-w-0">
             <p className="text-white font-semibold text-sm">Best Product Matches</p>
